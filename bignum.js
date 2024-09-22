@@ -1061,7 +1061,7 @@ class Big {
 }
 
 Big.new = (a) => new Big(a);
-Big.str = (a) => new Big(a).str();
+Big.str = (a, b) => new Big(a).str(b);
 Big.cmp = (a, b) => new Big(a).cmp(b);
 Big.gsp = (a, b) => new Big(a).gsp(b);
 Big.gte = (a, b) => new Big(a).gte(b);
