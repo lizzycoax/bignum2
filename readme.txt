@@ -11,7 +11,7 @@ until Ack(2^53): knuths up arrow notation ((2↑)²1000, 2↑²2↑1000 etc)
 until G(2^53): ackermann notation (Ack(9.007q), Ack^1000(9.007q) etc)
 until G^(2^53)(64): graham notation (G(9.007q), G^1000(9.007q) etc)
 until G^(G^(2^53)(64))(64): exponentiated graham notation (G^(9.007q)(64), G^(G(9.007q))(64) etc)
-up to and inlcuding g_BHO: slow growing function hierarchy up to and including BHO
+after that: slow growing function hierarchy up to BHO
 after that: visual representation of internal value
 
 function list (numbers automatically convert to bignums):
