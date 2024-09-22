@@ -12,7 +12,7 @@
 	successive numbers cant come after positional arrays in nestings
 	Infinity indicates a precision cutoff
 	
-	the limit is roughly f_ε_0(precision) fast growing function hierarchy
+	the limit is roughly f_ε_0(precision) in fast growing function hierarchy
 */
 
 /* omg so confusing!! lawl x3 */
