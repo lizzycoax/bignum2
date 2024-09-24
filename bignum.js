@@ -413,16 +413,15 @@ $big = {
 		),
 	fgh: (x, o, r, s) =>
 		r == 0 ? x :
-		o == 0 ? x :
-		o == 1 ? $big.cHyp(x, 1, r) :
+		o == 0 ? $big.cHyp(x, 1, r) :
 		x == 0 ? 0 :
 		x == 1 ? 2 :
 		s >= $big.prec - 1 && (
-			$big.gte(o, 5) && $big.lt(o, [0, 1]) ||
+			$big.gte(o, 4) && $big.lt(o, [0, 1]) ||
 			$big.gte(o, [1, 1])
 		) ? [Infinity] :
-		o == 2 ? $big.cHyp($big.exp(r), 2, x) :
-		o == 3 ?
+		o == 1 ? $big.cHyp($big.exp(r), 2, x) :
+		o == 2 ?
 			$big.lt(x, [53, 2]) ?
 				(x =>
 					r == 1 ? x : $big.fgh(x, o, $big.cHyp(r, 1, 1, true), s)
@@ -430,7 +429,7 @@ $big = {
 			$big.rec($big.fghR(o), x, r, s) :
 		$big.rec($big.fghR(o), x, r, s),
 	fghR: o => ({
-		grr: typeof(o) == "number" ? [1, o - 2] : o.reduce((o, x, i) => (
+		grr: typeof(o) == "number" ? [1, o - 1] : o.reduce((o, x, i) => (
 			o.push(x),
 			o
 		), [1]),
