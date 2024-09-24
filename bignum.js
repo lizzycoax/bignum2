@@ -1048,6 +1048,16 @@ class Big {
 		}
 		return new Big($big.g(this.val));
 	}
+	grc(b) {
+		if ($big.lt(this.val, 1) || !$big.int(this.val)) {
+			return NaN;
+		}
+		b = new Big(b);
+		if ($big.lt(b.val, 0) || !$big.int(b.val)) {
+			return NaN;
+		}
+		return new Big($big.rec($big.gR(), this.val, b.val));
+	}
 	fgh(o, r) {
 		if ($big.lt(this.val, 0) || !$big.int(this.val)) {
 			return NaN;
