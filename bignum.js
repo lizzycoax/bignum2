@@ -1105,6 +1105,7 @@ Big.hex = (a, b) => new Big(a).hex(b);
 Big.hyp = (a, b, c) => new Big(a).hyp(b, c);
 Big.ack = (a) => new Big(a).ack();
 Big.g = (a) => new Big(a).g();
+Big.grc = (a, b) => new Big(a).grc(b);
 Big.fgh = (a, b, c) => new Big(a).fgh(b, c);
 Big.fun = (a, b, c) => new Big(a).fun(b, c);
 
