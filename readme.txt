@@ -47,9 +47,10 @@ Big.log(a, b): log_b(a); b is 2 if undefined
 Big.tet(a, b): a ^^ b; a and b must be non negative integers
 Big.pent(a, b): a ^^^ b; a and b must be non negative integers
 Big.hex(a, b): a ^^^^ b; a and b must be non negative integers
-Big.hyp(a, b, c): a [b] c; a, b and c must be non negative integers, b must be nonzero
+Big.hyp(a, b, c): a [b] c; a and c must be non negative integers, b must be a nonzero integer
 Big.ack(a): a [a - 2] a; a must be a nonzero integer
 Big.g(a): G(a) (grahams function); a must be a nonzero integer
+Big.grc(a, b): G^b(a) (grahams function); a must be a nonzero integer, b must be a non negative integer
 technical and unstable functions:
 Big.fgh(a, b, c): f_b^c(a) (fast growing function hierarchy); a must be a non negative integer
 Big.fun(a, b, c)
