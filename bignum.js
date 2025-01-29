@@ -613,12 +613,13 @@ $bigstr = {
 		typeof(x) == "number" ? $bigstr.dec(x) :
 		((f, x) => f(f, x, true))((f, [str, x], fst) =>
 			x.reduceRight((str, xNext, i) =>
-				/* add/remove brackets to add/remove opening strings at beginning */
-				((str == null ? "" : str) +
-					/* array opening and closing strings */
-					(i == x.length - 1 ? "<sup>" : i == 0 ? "</sup>" :
-						/* strings between number and number or array respectively */
-						(typeof(xNext) == "number" ? "," : ","))) +
+				(x.length == 1 ? "" :
+					/* add/remove brackets to add/remove opening strings at beginning */
+					((str == null ? "" : str) +
+						/* array opening and closing strings */
+						(i == x.length - 1 ? "<sup>" : i == 0 ? "</sup>" :
+							/* strings between number and number or array respectively */
+							(typeof(xNext) == "number" ? "," : ",")))) +
 				(typeof(xNext) == "number" ?
 					fst && i == 0 ? $bigstr.dec(xNext) :
 					xNext == Infinity ? "..." : xNext.toString() :
