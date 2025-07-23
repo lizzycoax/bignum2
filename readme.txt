@@ -58,7 +58,7 @@ for finite ordinals you input a number
 for transfinite ordinals you input a nested array
 each value represents ω to the power of the index and multiplied by the value
 so [1, 2, 3, 4] represents ω^3 * 4 + ω^2 * 3 + ω2 + 1
-for arrays in arrays, the first value is the value while the rest are the index
+for arrays in arrays, the first value is the value while the rest are the index (with an offset of 1 if the index is finite)
 so [1, 2, [3, 3], [4, 4]] is the same as [1, 2, 3, 4]
 if there are multiple values in the index, that represents another ordinal
 so the nested array in [[10, 1, 2, 3]] represents 10 at the index [1, 2, 3] so the array represents ω^(ω^2 + ω + 1) * 10
