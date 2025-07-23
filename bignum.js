@@ -2,7 +2,7 @@
 	should be fun to figure out how the final values are calculated ;P
 	the first number in arrays and nestings represents their value
 	the numbers after that represent their position
-	
+
 	stored as number up to and including 2**53
 	the base function is 2**x
 	zeroes in the array are not allowed
@@ -11,7 +11,7 @@
 	each number must have a higher position in nestings
 	successive numbers cant come after positional arrays in nestings
 	Infinity indicates a precision cutoff
-	
+
 	the limit is roughly f_ε_0(precision) in fast growing function hierarchy
 */
 
@@ -427,6 +427,11 @@ $big = {
 					r == 1 ? x : $big.fgh(x, o, $big.cHyp(r, 1, 1, true), s)
 				)($big.cHyp($big.exp(x), 2, x)) :
 			$big.rec($big.fghR(o), x, r, s) :
+		$big.len(o) > $big.prec &&
+			typeof(o) == "object" && typeof(o[0]) == "object" && ((f, x) => f(f, x))((f, x) =>
+				x[0] > 1 || (typeof(x[1]) == "number" ? x[1] > 2 : f(f, x[1]))
+			, o[0]) ?
+			$big.rec($big.fghR(o), [53, 1], r, s) :
 		$big.rec($big.fghR(o), x, r, s),
 	fghR: o => ({
 		grr: typeof(o) == "number" ? [1, o - 1] : o.reduce((o, x, i) => (
@@ -477,7 +482,7 @@ $bigord = {
 				(f ? "" : a == Infinity ? "..." : "0"),
 				")"
 			] : [
-				"φ" + 
+				"φ" +
 				(a == 0 || a == Infinity ? "" :
 					"<sup>" + (a + 1) + "<sub>2</sub></sup>"
 				) + "(" +
@@ -722,7 +727,7 @@ $bigstr = {
 				(x[1] == 1 ? "</sup>" : "")
 		) +
 		(x.length == 2 && x[0] != Infinity ? "" : ")"),
-	/* fgh: x =>
+	fgh: x =>
 		typeof(x) == "number" ? $bigstr.dec(x) :
 		x.reduceRight((str, o, i) =>
 			str + (
@@ -733,23 +738,28 @@ $bigstr = {
 					(o == 1 ? "" : ")<sup>" + o + "</sup>") :
 				(o =>
 					"<i>f</i><sub>" + (
-						o.reduceRight((str, e, i) =>
-							i == 0 ?
-								e == Infinity ? str + "+..." : str :
-							(e =>
-								(e[0] == 0 ? str : (str || "") + (str == null ? "" : "+") + (
-									$bigord.ord(e) + (r =>
-										r == 1 || r == Infinity ? "" : r
-									)(e[0] + ($big.lt(e, [1, 2]) && str == null ? 2 : 0)) || "1"
-								))
-							)(typeof(e) == "number" ? [e, i] : e),
-						null)
+						((f, x) => f(f, x))((f, [o, s]) =>
+							o.reduceRight((str, o, i) =>
+								i == 0 ? (o == Infinity ? str + " + ..." : str) :
+								(o =>
+									(str == null ? "" : str + " + ") +
+									(o.length == 2 && o[1] == 1 ? "" : "ω" +
+										(o.length == 2 && o[1] == 2 ? "" : "<sup>" + (
+											o.length == 2 && typeof(o[1]) == "number" ? o[1] - 1 : f(f, [o])
+										) + "</sup>")
+									) +
+									(o[0] == Infinity ? "" : o[0] == 1 && (o.length > 2 || o[1] != 1) ? "" :
+										(o[0] + (s ? 2 : 0))
+									)
+								)(typeof(o) == "number" ? [o, i] : o)
+							, null)
+						, [o, o.length == 2 && typeof(o[1]) == "number"])
 					) + "</sub>" + (
 						o[0] == 1 || o[0] == Infinity ? "" : "<sup>" + o[0] + "</sup>"
 					) + "("
 				)(typeof(o) == "number" ? [o, i] : o)
 			),
-		"") + ")".repeat(x.length - (x[0] == Infinity ? 1 : 2)), */
+		"") + ")".repeat(x.length - (x[0] == Infinity ? 1 : 2)),
 	str: (x, int) =>
 		$big.lt(x, $bigstr.illlim) ? $bigstr.ill(x, int) :
 		$big.lt(x, $bigstr.elim) ? $bigstr.e(x, int) :
@@ -758,7 +768,7 @@ $bigstr = {
 		$big.lt(x, [53, 1, [1, 2, 1]]) ? $bigstr.g(x) :
 		$big.lt(x, [53, 1, [2, 2, 1]]) ? $bigstr.eg(x) :
 		$big.lt(x, [53, 1, 1, [1, [1, 4]]]) ? $bigstr.sgh(x) :
-		$bigstr.raw(x)
+		$bigstr.fgh(x)
 }
 
 class Big {
