@@ -12,7 +12,7 @@ until G(2^53): ackermann notation (Ack(9.007q), Ack^1000(9.007q) etc)
 until G^(2^53)(64): graham notation (G(9.007q), G^1000(9.007q) etc)
 until G^(G^(2^53)(64))(64): exponentiated graham notation (G^(9.007q)(64), G^(G(9.007q))(64) etc)
 after that: slow growing function hierarchy up to BHO
-after that: visual representation of internal value
+after that: fast growing functino hierarchy
 
 function list (numbers automatically convert to bignums):
 Big.new(a): converts to bignum
@@ -51,6 +51,15 @@ Big.hyp(a, b, c): a [b] c; a and c must be non negative integers, b must be a no
 Big.ack(a): a [a - 2] a; a must be a nonzero integer
 Big.g(a): G(a) (grahams function); a must be a nonzero integer
 Big.grc(a, b): G^b(a) (grahams function); a must be a nonzero integer, b must be a non negative integer
-technical and unstable functions:
-Big.fgh(a, b, c): f_b^c(a) (fast growing function hierarchy); a must be a non negative integer
-Big.fun(a, b, c)
+Big.fgh(a, b, c): f_b^c(a) (fast growing function hierarchy); a must be a non negative integer and b must be an ordinal under ε_0 (see below for how to input ordinals)
+
+how to input an ordinal:
+for finite ordinals you input a number
+for transfinite ordinals you input a nested array
+each value represents ω to the power of the index and multiplied by the value
+so [1, 2, 3, 4] represents ω^3 * 4 + ω^2 * 3 + ω2 + 1
+for arrays in arrays, the first value is the value while the rest are the index
+so [1, 2, [3, 3], [4, 4]] is the same as [1, 2, 3, 4]
+if there are multiple values in the index, that represents another ordinal
+so the nested array in [[10, 1, 2, 3]] represents 10 at the index [1, 2, 3] so the array represents ω^(ω^2 + ω + 1) * 10
+arrays must be in a form where there are no zeroes, so [1, 2, 0, 3] has to be [1, 2, [3, 4]]
