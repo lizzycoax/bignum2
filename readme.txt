@@ -51,7 +51,8 @@ Big.hyp(a, b, c): a [b] c; a and c must be non negative integers, b must be a no
 Big.ack(a): a [a - 2] a; a must be a nonzero integer
 Big.g(a): G(a) (grahams function); a must be a nonzero integer
 Big.grc(a, b): G^b(a) (grahams function); a must be a nonzero integer, b must be a non negative integer
-Big.fgh(a, b, c): f_b^c(a) (fast growing function hierarchy); a must be a non negative integer and b must be an ordinal under ε_0 (see below for how to input ordinals)
+Big.gs(a): GS(a) (goodstein sequence); a must be a nonzero integer
+Big.fgh(a, b, c): f_b^c(a) (fast growing hierarchy); a must be a non negative integer and b must be an ordinal under ε_0 (see below for how to input ordinals)
 
 how to input an ordinal:
 for finite ordinals you input a number
