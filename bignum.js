@@ -373,13 +373,15 @@ $big = {
 		r == 0 ? 1 :
 		r == 1 ? l :
 		l == 2 && r == 2 ? 4 :
+		$big.eq(h, [Infinity]) || $big.eq(r, [Infinity]) ||
+			$big.eq(l, [Infinity]) ? [Infinity] :
 		typeof(h) != "number" ? $big.rec($big.hypH(l, r), h, 1) :
 		typeof(r) != "number" ? $big.rec($big.hypR(l, h), r, 1) :
 		typeof(l) != "number" ? $big.rec($big.hypL(h, r), l, 1) :
 		$big.hypS(l, h, r),
 	g: (x, s) =>
 		/* thanks, graham */
-		s >= $big.prec - 1 ? [Infinity] :
+		s >= $big.prec - 1 || $big.eq(x, [Infinity]) ? [Infinity] :
 			$big.rec($big.hypH(3, 3), 4, x, s),
 	gR: () => ({
 		grr: [1, 1, [1, 2]],
@@ -416,6 +418,7 @@ $big = {
 		o == 0 ? $big.cHyp(x, 1, r) :
 		x == 0 ? 0 :
 		x == 1 ? 2 :
+		$big.eq(x, [Infinity]) ? [Infinity] :
 		s >= $big.prec - 1 && (
 			$big.gte(o, 4) && $big.lt(o, [0, 1]) ||
 			$big.gte(o, [1, 1])
@@ -427,10 +430,10 @@ $big = {
 					r == 1 ? x : $big.fgh(x, o, $big.cHyp(r, 1, 1, true), s)
 				)($big.cHyp($big.exp(x), 2, x)) :
 			$big.rec($big.fghR(o), x, r, s) :
-		$big.len(o) > $big.prec &&
-			typeof(o) == "object" && typeof(o[0]) == "object" && ((f, x) => f(f, x))((f, x) =>
-				x[0] > 1 || (typeof(x[1]) == "number" ? x[1] > 2 : f(f, x[1]))
-			, o[0]) ?
+		$big.len(o) > $big.prec && typeof(o) == "object" &&
+		typeof(o[0]) == "object" && ((f, x) => f(f, x))((f, x) =>
+			x[0] > 1 || (typeof(x[1]) == "number" ? x[1] > 2 : f(f, x[1]))
+		, o[0]) ?
 			$big.rec($big.fghR(o), [53, 1], r, s) :
 		$big.rec($big.fghR(o), x, r, s),
 	fghR: o => ({
@@ -444,7 +447,46 @@ $big = {
 			typeof(o[0]) == "number" ?
 				$big.fgh(x, $big.fsq(o, x), x, s) :
 			$big.fgh(x, $big.fsq(o, x), 1, s)
-	})
+	}),
+	gs: n =>
+		n == 0 ? 0 :
+		n == 1 ? 1 :
+		$big.gte(n, [53, 1, 1]) ? [Infinity] :
+		(o =>
+			$big.cHyp(o.reduce((x, o) =>
+				$big.fgh(x, typeof(o) == "number" ? 0 : (
+					o.shift(), o.length == 1 && typeof(o[0]) == "number" ? o[0] - 1 : o
+				), 1)
+			, 3), 1, 3, true)
+		)(
+			((f, x) => f(f, x))((f, [x, s, r]) =>
+				s > $big.prec + 1 ? [] :
+				x == 1 ? 1 :
+				x == 2 ? [[1, 2]] :
+				$big.gte(x, [53, 2]) ? [[1].concat(f(f, [[x[0], x[1] - 1], s + 1]))] :
+				(([e, a]) =>
+					(x =>
+						a == 0 ? x :
+							(x =>
+								typeof(x) == "number" ? [x] : x
+							)(
+								f(f, [a, s == null ? null : s + (!r || e >= 3 ? $big.len(x) : 0), r])
+							).concat(x)
+					)([[1].concat((x =>
+						typeof(x) == "number" ? [x + 1] : x
+					)(f(f, [e])))])
+				)(
+					$big.lt(x, [53, 1]) ? (l =>
+						2 ** l > x ?
+							[l - 1, x - 2 ** (l - 1)] :
+						[l, x - 2 ** l]
+					)(Math.floor(Math.log2(x))) :
+					[Math.floor(x[0]), (x =>
+						typeof(x) == "number" ? Math.floor(x) : x
+					)($big.cHyp(x, 1, [Math.floor(x[0]), x[1]], true))]
+				)
+			, [n, 0, true])
+		)
 }
 
 $bigord = {
@@ -707,18 +749,21 @@ $bigstr = {
 				i < (x[0] == Infinity ? 1 : 2) ? str :
 				(i == (x[0] == Infinity ? 1 : 2) ? x => x : ([l, r]) =>
 					l + str + r
-				)($bigord.ord((o =>
-					o.reduce((o, e, i) =>
-						((i == 0 && e == 1 || e == Infinity) || o.push((i == 0 ?
-							e - 1 :
-							typeof(e) == "number" ? [e, i + 1] :
-							(e.length == 2 && typeof(e[1]) == "number" ?
-								[e[0], e[1] + 1] :
-								e
-							)
-						)), o),
-					[o[0] == Infinity ? Infinity : 1])
-				)(typeof(o) == "number" ? [o, i] : o), i > (x[0] == Infinity ? 1 : 2))),
+				)(
+					$bigord.ord((o =>
+						o.reduce((o, e, i) =>
+							((i == 0 && e == 1 || e == Infinity) || o.push((i == 0 ?
+								e - 1 :
+								typeof(e) == "number" ? [e, i + 1] :
+								(e.length == 2 && typeof(e[1]) == "number" ?
+									[e[0], e[1] + 1] :
+									e
+								)
+							)), o),
+						[o[0] == Infinity ? Infinity : 1])
+					)(typeof(o) == "number" ? [o, i] : o),
+					i > (x[0] == Infinity ? 1 : 2))
+				),
 			"")
 		) + "</sub>(") + (
 			x[0] == Infinity ? "..." :
@@ -745,10 +790,12 @@ $bigstr = {
 									(str == null ? "" : str + " + ") +
 									(o.length == 2 && o[1] == 1 ? "" : "ω" +
 										(o.length == 2 && o[1] == 2 ? "" : "<sup>" + (
-											o.length == 2 && typeof(o[1]) == "number" ? o[1] - 1 : f(f, [o])
+											o.length == 2 && typeof(o[1]) == "number" ?
+												o[1] - 1 : f(f, [o])
 										) + "</sup>")
 									) +
-									(o[0] == Infinity ? "" : o[0] == 1 && (o.length > 2 || o[1] != 1) ? "" :
+									(o[0] == Infinity ? "" :
+										o[0] == 1 && (o.length > 2 || o[1] != 1) ? "" :
 										(o[0] + (s ? 2 : 0))
 									)
 								)(typeof(o) == "number" ? [o, i] : o)
@@ -1059,9 +1106,6 @@ class Big {
 		return new Big($big.g(this.val));
 	}
 	grc(b) {
-		if ($big.lt(this.val, 1) || !$big.int(this.val)) {
-			return NaN;
-		}
 		b = new Big(b);
 		if ($big.lt(b.val, 0) || !$big.int(b.val)) {
 			return NaN;
@@ -1072,11 +1116,17 @@ class Big {
 		if ($big.lt(this.val, 0) || !$big.int(this.val)) {
 			return NaN;
 		}
-		r = new Big(r);
+		r = new Big(r ? r : 1);
 		return new Big($big.fgh(this.val, o, r.val));
 	}
 	fun(b, c) {
 		return new Big($big.rec(b, this.val, c));
+	}
+	gs() {
+		if ($big.lt(this.val, 0) || !$big.int(this.val)) {
+			return NaN;
+		}
+		return new Big($big.gs(this.val));
 	}
 }
 
@@ -1118,6 +1168,7 @@ Big.g = (a) => new Big(a).g();
 Big.grc = (a, b) => new Big(a).grc(b);
 Big.fgh = (a, b, c) => new Big(a).fgh(b, c);
 Big.fun = (a, b, c) => new Big(a).fun(b, c);
+Big.gs = (a) => new Big(a).gs();
 
 $bigstr.illlim = Big.pow(10, 33).val;
 $bigstr.mdelim = Big.pow(10, 1000).val;
