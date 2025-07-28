@@ -1,5 +1,6 @@
 bignum 2!!!
 the limit is roughly f_ε_0(precision) in fast growing function hierarchy
+precision is stored in $big.prec, default precision is 16
 
 string conversion notations:
 decimals have 3 digits of precision
