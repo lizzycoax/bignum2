@@ -6,7 +6,7 @@
 	stored as number up to and including 2**53
 	the base function is 2**x
 	zeroes in the array are not allowed
-	the array must start with [53, 1]
+	the array must start with [>= 53, >= 1]
 	[n, 1] is not allowed in nestings
 	each number must have a higher position in nestings
 	successive numbers cant come after positional arrays in nestings
