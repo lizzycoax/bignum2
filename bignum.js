@@ -814,7 +814,7 @@ $bigstr = {
 		$big.lt(x, [53, 1, [1, 1, 1]]) ? $bigstr.ack(x) :
 		$big.lt(x, [53, 1, [1, 2, 1]]) ? $bigstr.g(x) :
 		$big.lt(x, [53, 1, [2, 2, 1]]) ? $bigstr.eg(x) :
-		$big.lt(x, [53, 1, 1, [1, [1, 4]]]) ? $bigstr.sgh(x) :
+		/* $big.lt(x, [53, 1, 1, [1, [1, 4]]]) ? $bigstr.sgh(x) : */
 		$bigstr.fgh(x)
 }
 
