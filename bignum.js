@@ -996,9 +996,13 @@ class Big {
 			return NaN;
 		}
 		return new Big($big.cHyp(
-			$big.cHyp(this.val, 3, c.val),
-			4,
-			$big.cHyp($big.exp($big.exp(b.val)), 3, c.val)
+			$big.cHyp(
+				$big.cHyp(this.val, 3, c.val, true),
+				4,
+				$big.exp($big.exp(b.val))
+			),
+			3,
+			c.val
 		));
 	}
 	/* does a root on the magnitude */
@@ -1016,10 +1020,14 @@ class Big {
 			return NaN;
 		}
 		return new Big($big.cHyp(
-			$big.cHyp(this.val, 3, c.val),
-			4,
-			$big.cHyp($big.exp($big.exp(b.val)), 3, c.val),
-			true
+			$big.cHyp(
+				$big.cHyp(this.val, 3, c.val, true),
+				4,
+				$big.exp($big.exp(b.val)),
+				true
+			),
+			3,
+			c.val
 		));
 	}
 	exp(b) {
